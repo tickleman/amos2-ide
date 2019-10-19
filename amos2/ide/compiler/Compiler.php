@@ -16,6 +16,7 @@ class Compiler implements Configurable
 	//-------------------------------------------------------------- Configuration property constants
 	const OUTPUT = 'output';
 	const PATH   = 'path';
+	const RUN    = 'run';
 
 	//--------------------------------------------------------------------------------------- $output
 	/**
@@ -32,6 +33,14 @@ class Compiler implements Configurable
 	 * @var string
 	 */
 	public $path;
+
+	//------------------------------------------------------------------------------------------ $run
+	/**
+	 * Base path to run programs
+	 *
+	 * @var string
+	 */
+	public $run;
 
 	//----------------------------------------------------------------------------------- __construct
 	/**
