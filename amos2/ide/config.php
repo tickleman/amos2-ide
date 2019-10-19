@@ -1,6 +1,7 @@
 <?php
 namespace Amos2\Ide;
 
+use Amos2\Ide;
 use ITRocks\Framework;
 use ITRocks\Framework\Configuration;
 use ITRocks\Framework\Dao\File;
@@ -44,7 +45,9 @@ $config['Amos2/Ide'] = [
 		Framework\User\Access_Control::class,
 		Framework\User\Group\Admin_Plugin::class,
 		Framework\Component\Menu::class => include(__DIR__ . SL . 'menu.php'),
-		Framework\Feature\Validate\Validator::class
+		Framework\Feature\Validate\Validator::class,
+
+		Ide\Compiler::class => $loc[Ide\Compiler::class]
 	],
 
 	//----------------------------------------------------------------------- HIGHER priority plugins

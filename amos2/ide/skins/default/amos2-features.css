@@ -1,0 +1,14 @@
+li.action.compile > a:before,
+li.actions > ul > li.compile > a:before,
+ul.actions > li.compile > a:before {
+  content: 'F1';
+  font-weight: 500;
+  left: 8px;
+  position: absolute; }
+li.action.run > a:before,
+li.actions > ul > li.run > a:before,
+ul.actions > li.run > a:before {
+  content: 'F2';
+  font-weight: 500;
+  left: 8px;
+  position: absolute; }
