@@ -1,0 +1,22 @@
+article:not(.form), article > form {
+	grid-template-areas: "header" "header2" "content" "footer";
+	grid-template-rows: min-content min-content 1fr min-content;
+}
+
+article:not(.list) ul.general.actions {
+	border-top: 1px solid #d8d8d8;
+	grid-area: header2;
+}
+
+article.list > form > .general.actions {
+	left: 0;
+	right: initial;
+}
+
+article.list header > .summary {
+	text-align: right;
+}
+
+li.actions > ul, ul.actions {
+	flex-direction: row;
+}
