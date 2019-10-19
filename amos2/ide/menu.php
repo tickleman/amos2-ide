@@ -4,6 +4,9 @@ namespace Bappli\Studio;
 use ITRocks\Framework\Component\Menu;
 
 return [
+	'IDE' => [
+		'/Amos2/Ide/Programs' => 'Programs library'
+	],
 	'Administration' => [
 		Menu::CLEAR,
 		'/ITRocks/Framework/Users' => 'Users',
