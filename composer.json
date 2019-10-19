@@ -1,0 +1,15 @@
+{
+	"authors":     [{ "name": "amos2",  "email": "your@email.com" }],
+	"description": "Description of the ide project",
+	"extra": {
+		"installer-paths": { "{$vendor}/{$name}/": ["type:itrocks"] },
+		"installer-types": ["itrocks"]
+	},
+	"license":           "MIT",
+	"minimum-stability": "dev",
+	"name":              "amos2/ide",
+	"prefer-stable":     true,
+	"repositories":      [{ "type": "composer", "url": "https://hub.itrocks.org" }],
+	"require":           { "itrocks/framework": "dev-master" },
+	"type": "itrocks-final"
+}

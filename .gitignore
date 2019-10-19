@@ -1,0 +1,15 @@
+/.buildpath
+/.git
+/.idea
+/.project
+/.settings
+
+/cache
+/itrocks/framework
+/tmp
+/vendor
+
+/composer.lock
+/loc.php
+/pwd.php
+/update
