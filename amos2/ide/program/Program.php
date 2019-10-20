@@ -4,8 +4,10 @@ namespace Amos2\Ide;
 use ITRocks\Framework\Controller\Feature;
 use ITRocks\Framework\Dao;
 use ITRocks\Framework\Traits\Duplicate_Discriminate_By_Counter;
+use ITRocks\Framework\Traits\Has_Creation_Date_Time;
 use ITRocks\Framework\Traits\Has_Name;
 use ITRocks\Framework\Traits\Has_Name_Duplicate;
+use ITRocks\Framework\Traits\Has_Update_Date_Time;
 use ITRocks\Framework\User;
 
 /**
@@ -14,13 +16,15 @@ use ITRocks\Framework\User;
  * @data_access_control isChangeAllowed
  * @display_order name, author, code
  * @feature
- * @list name, author
+ * @list name, author, last_update
  */
 class Program
 {
 	use Duplicate_Discriminate_By_Counter;
+	use Has_Creation_Date_Time;
 	use Has_Name_Duplicate;
 	use Has_Name;
+	use Has_Update_Date_Time;
 
 	//--------------------------------------------------------------------------------------- $author
 	/**
