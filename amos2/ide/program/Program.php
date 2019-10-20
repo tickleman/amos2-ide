@@ -1,6 +1,7 @@
 <?php
 namespace Amos2\Ide;
 
+use ITRocks\Framework\Controller\Feature;
 use ITRocks\Framework\Dao;
 use ITRocks\Framework\Traits\Duplicate_Discriminate_By_Counter;
 use ITRocks\Framework\Traits\Has_Name;
@@ -10,6 +11,7 @@ use ITRocks\Framework\User;
 /**
  * @before_write setNewProgramAuthor
  * @business
+ * @data_access_control isChangeAllowed
  * @display_order name, author, code
  * @feature
  * @list name, author
@@ -49,6 +51,22 @@ class Program
 	public function dirName($separator = SL)
 	{
 		return strUriElement($this->author->login) . $separator . strUriElement($this->name);
+	}
+
+	//------------------------------------------------------------------------------- isChangeAllowed
+	/**
+	 * @param $feature string
+	 * @return boolean
+	 */
+	public function isChangeAllowed($feature)
+	{
+		if (
+			!in_array($feature, [Feature::F_DELETE, Feature::F_WRITE])
+			|| Dao::is(User::current(), $this->author)
+		) {
+			return true;
+		}
+		return false;
 	}
 
 	//--------------------------------------------------------------------------- setNewProgramAuthor

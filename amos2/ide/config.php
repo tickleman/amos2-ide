@@ -46,6 +46,7 @@ $config['Amos2/Ide'] = [
 		Framework\User\Group\Admin_Plugin::class,
 		Framework\Component\Menu::class => include(__DIR__ . SL . 'menu.php'),
 		Framework\Feature\Validate\Validator::class,
+		Framework\User\Access_Control\Data::class,
 
 		Ide\Compiler::class => $loc[Ide\Compiler::class]
 	],
