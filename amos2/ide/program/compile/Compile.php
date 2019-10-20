@@ -67,11 +67,36 @@ class Compile
 		if (is_dir($path)) {
 			deleteDirectory($path);
 		}
-		mkdir($path, 0700, true);
+		mkdir("$path/resources/fonts",   0700, true);
+		mkdir("$path/resources/sprites", 0700, true);
 		// main program
-		file_put_contents($path . '/main.amos', $this->program->code);
+		file_put_contents("$path/main.amos", $this->program->code);
 		// manifest
-		copy($compiler->path . '/demos/amosball/manifest.hjson', $path . '/manifest.hjson');
+		copy($compiler->path . '/demos/amosball/manifest.hjson', "$path/manifest.hjson");
+		// resources
+		foreach ($this->program->resources as $resource) {
+			if (!$resource->file) {
+				continue;
+			}
+			$content = $resource->file->content;
+			$name    = $resource->file->name;
+			switch (rLastParse($name, DOT)) {
+				case 'font':
+				case 'googlefont':
+					$directory = 'fonts';
+					break;
+				case 'jpg':
+				case 'png':
+					$directory = 'sprites';
+					break;
+				default:
+					$directory = null;
+			}
+			if (!$directory) {
+				continue;
+			}
+			file_put_contents("$path/resources/$directory/$name", $content);
+		}
 
 		return $path;
 	}

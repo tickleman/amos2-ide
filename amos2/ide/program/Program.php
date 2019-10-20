@@ -1,6 +1,7 @@
 <?php
 namespace Amos2\Ide;
 
+use Amos2\Ide\Program\Resource;
 use ITRocks\Framework\Controller\Feature;
 use ITRocks\Framework\Dao;
 use ITRocks\Framework\Traits\Duplicate_Discriminate_By_Counter;
@@ -17,6 +18,8 @@ use ITRocks\Framework\User;
  * @display_order name, author, code
  * @feature
  * @list name, author, last_update
+ * @override creation    @user invisible_edit, invisible_output
+ * @override last_update @user invisible_edit, invisible_output
  */
 class Program
 {
@@ -43,6 +46,13 @@ class Program
 	 * @var string
 	 */
 	public $code;
+
+	//------------------------------------------------------------------------------------ $resources
+	/**
+	 * @link Collection
+	 * @var Resource[]
+	 */
+	public $resources;
 
 	//--------------------------------------------------------------------------------------- dirName
 	/**
