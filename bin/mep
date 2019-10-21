@@ -1,4 +1,4 @@
-rsync -zaPq --exclude=/bin --exclude=/.idea --exclude=.git --exclude=/loc.php --exclude=/pwd.php --exclude=/vendor ./ root@amos2.fr:/home/amos2/www/ide/
+rsync -zaPq --exclude=/bin --exclude=/.idea --exclude=.git --exclude=/itrocks --exclude=/loc.php --exclude=/pwd.php --exclude=/vendor ./ root@amos2.fr:/home/amos2/www/ide/
 rsh root@amos2.fr "cd /home/amos2/www/ide && php composer.phar update"
 rsh root@amos2.fr touch /home/amos2/www/ide/update
 rsh root@amos2.fr chown -R www-data.www-data /home/amos2/www/ide
