@@ -7,6 +7,10 @@ return [
 	'IDE' => [
 		'/Amos2/Ide/Programs' => 'Programs library'
 	],
+	'User account' => [
+		'/ITRocks/Framework/User/login' => 'Login',
+		'/ITRocks/Framework/User/register' => 'Register new user'
+	],
 	'Administration' => [
 		Menu::CLEAR,
 		'/ITRocks/Framework/Users' => 'Users',
