@@ -2,10 +2,9 @@
 namespace Amos2\Ide\Program;
 
 use Amos2\Ide\Program;
-use ITRocks\Framework\Controller\Parameters;
+use ITRocks\Framework\Component\Button;
 use ITRocks\Framework\Feature\Add\Controller;
-use ITRocks\Framework\Reflection\Annotation\Property\User_Annotation;
-use ITRocks\Framework\Reflection\Reflection_Property;
+use ITRocks\Framework\Setting;
 
 /**
  * Program add controller
@@ -13,21 +12,17 @@ use ITRocks\Framework\Reflection\Reflection_Property;
 class Add_Controller extends Controller
 {
 
-	//------------------------------------------------------------------------------------------- run
+	//----------------------------------------------------------------------------- getGeneralButtons
 	/**
-	 * @noinspection PhpDocMissingThrowsInspection
-	 * @param $parameters Parameters
-	 * @param $form       array
-	 * @param $files      array[]
-	 * @param $class_name string
-	 * @return mixed
+	 * @param $program    Program
+	 * @param $parameters array
+	 * @param $settings Setting\Custom\Set|null
+	 * @return Button[]
 	 */
-	public function run(Parameters $parameters, array $form, array $files, $class_name)
+	public function getGeneralButtons($program, array $parameters, Setting\Custom\Set $settings = null)
 	{
-		/** @noinspection PhpUnhandledExceptionInspection */
-		User_Annotation::of(new Reflection_Property($parameters->getMainObject(Program::class), 'code'))
-			->add('invisible');
-		return parent::run($parameters, $form, $files, $class_name);
+		$buttons = parent::getGeneralButtons($program, $parameters, $settings);
+		return array_merge((new Compile_Run)->buttons($program), $buttons);
 	}
 
 }
