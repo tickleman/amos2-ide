@@ -17,6 +17,24 @@ class Controller implements Feature_Controller
 	//--------------------------------------------------------------------------------------- FEATURE
 	const FEATURE = 'compile';
 
+	//----------------------------------------------------------------------------- prepareAndCompile
+	/**
+	 * @param $program Program
+	 * @param $form    array
+	 * @return Compile
+	 */
+	public function prepareAndCompile(Program $program, $form)
+	{
+		if (!$program->author->login) $program->author->login = $_SERVER['REMOTE_ADDR'];
+		if (!$program->name) $program->name = 'new';
+		if (isset($form['code'])) {
+			(new Object_Builder_Array())->build($form, $program);
+		}
+		$compile = new Compile($program);
+		$compile->compile();
+		return $compile;
+	}
+
 	//------------------------------------------------------------------------------------------- run
 	/**
 	 * @param $parameters Parameters
@@ -26,16 +44,10 @@ class Controller implements Feature_Controller
 	 */
 	public function run(Parameters $parameters, array $form, array $files)
 	{
-		/** @var $program Program */
 		$program = $parameters->getMainObject(Program::class);
-		if (isset($form['code'])) {
-			(new Object_Builder_Array())->build($form, $program);
-		}
-		$compile = new Compile($program);
-		$compile->compile();
-
+		$compile = $this->prepareAndCompile($program, $form);
+		$parameters->set('compile', $compile);
 		$parameters = $parameters->getObjects();
-		$parameters['compile'] = $compile;
 		return View::run($parameters, $form, $files, get_class($program), static::FEATURE);
 	}
 
