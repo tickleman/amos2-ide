@@ -75,7 +75,7 @@ class Program
 	public function isChangeAllowed($feature)
 	{
 		if (
-			!in_array($feature, [Feature::F_DELETE, Feature::F_WRITE])
+			!in_array($feature, [Feature::F_DELETE, Feature::F_SAVE])
 			|| Dao::is(User::current(), $this->author)
 		) {
 			return true;
