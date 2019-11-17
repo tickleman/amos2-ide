@@ -1,3 +1,8 @@
-.company.logo {
+.company.logo > a {
   background: white url("img/amos2.png") 12px 12px no-repeat;
   background-size: auto 36px; }
+
+@media screen and (min-width: 470px) {
+  body.min-left .company.logo > a {
+    background: white url("img/amos2-small.png") 10px 20px no-repeat;
+    background-size: auto 24px; } }

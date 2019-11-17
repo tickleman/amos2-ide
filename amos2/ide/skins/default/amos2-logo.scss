@@ -1,5 +1,15 @@
-.company.logo {
+@import '../../../../itrocks/framework/skins/default/responsive.scss';
+
+.company.logo > a {
 	background: white url('img/amos2.png') 12px 12px no-repeat;
 	background-size: auto 36px;
+}
+
+@media screen and (min-width: $tab-min-width) {
+
+	body.min-left .company.logo > a {
+		background: white url('img/amos2-small.png') 10px 20px no-repeat;
+		background-size: auto 24px;
+	}
 
 }
