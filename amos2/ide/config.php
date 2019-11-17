@@ -49,7 +49,8 @@ $config['Amos2/Ide'] = [
 		Framework\User\Access_Control\Data::class,
 
 		Ide\Compiler::class => $loc[Ide\Compiler::class],
-		Ide\User\Hide_Menu::class
+		Ide\User\Hide_Menu::class,
+		Ide\User\Hide_Unused_Actions::class
 	],
 
 	//----------------------------------------------------------------------- HIGHER priority plugins
