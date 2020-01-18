@@ -93,6 +93,7 @@ class Compile
 			deleteDirectory($path);
 		}
 		mkdir("$path/resources/fonts",   0700, true);
+		mkdir("$path/resources/images",  0700, true);
 		mkdir("$path/resources/sprites", 0700, true);
 		// main program
 		$ext = ($this->program->version > '0.9') ? 'aoz' : 'amos';
@@ -118,7 +119,9 @@ class Compile
 					break;
 				case 'jpg':
 				case 'png':
-					$directory = 'sprites';
+					$directory = ($this->program->version < '0.9')
+						? 'sprites'
+						: 'images';
 					break;
 				default:
 					$directory = null;
