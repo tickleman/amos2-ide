@@ -1,0 +1,35 @@
+#!/usr/bin/php
+Input files  : /home/amos2/compiler/in/*
+Output files : /home/amos2/compiler/out/*
+An input file should contain (example) :
+0.9.2.6
+/home/amos2/ide/input/127.0.0.1/test
+<?php
+$cwd  = getcwd();
+$path = '/home/amos2/compiler';
+if (!file_exists("$path/in"))  mkdir("$path/in");
+if (!file_exists("$path/out")) mkdir("$path/out");
+while (true) {
+	clearstatcache();
+	foreach (scandir("$path/in") as $file) if (substr($file, 0, 1) !== '.') {
+		$in  = file("$path/in/$file", FILE_IGNORE_NEW_LINES);
+		unlink("$path/in/$file");
+		if ((count($in) === 2) && (strpos($in[1], '.') === false)) {
+			$output = [];
+			echo "Execute $file : wine $path/$in[0]/aoz-x86.exe $in[1]\n";
+			chdir("$path/$in[0]");
+			exec("./aozscreen $in[1]");
+			$output = is_file("$in[1]/output")
+				? file("$in[1]/output")
+				: ["Error : winecompile no output for $file"];
+			chdir($cwd);
+			clearstatcache();
+		}
+		else {
+			echo "Error : bad winecompile input file content for $file\n" . join("\n", $in) . "\n";
+			$output = ["Error : bad winecompile input file content for $file"];
+		}
+		file_put_contents("$path/out/$file", trim(join("\n", $output)));
+	}
+	usleep(100000);
+}

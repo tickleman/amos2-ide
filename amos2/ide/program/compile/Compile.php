@@ -54,6 +54,31 @@ class Compile
 		$this->publish($input);
 	}
 
+	//---------------------------------------------------------------------------------- compilerExec
+	/**
+	 * @example /home/amos2/compiler/0.7/amosc-linux-x64
+	 * @example wine /home/amos2/compiler/0.9.2.6/aoz-x86.exe
+	 * @return string
+	 */
+	protected function compilerExec()
+	{
+		$path = $this->compilerPath();
+		$exec = $path . '/amosc-linux-x64';
+		if (!file_exists($exec)) {
+			$exec = "wine $path/aoz-x86.exe";
+		}
+		return $exec;
+	}
+
+	//---------------------------------------------------------------------------------- compilerPath
+	/**
+	 * @return string
+	 */
+	protected function compilerPath()
+	{
+		return Compiler::get()->path . SL . $this->program->version;
+	}
+
 	//--------------------------------------------------------------------------------- generateInput
 	/**
 	 * @return string
@@ -70,9 +95,15 @@ class Compile
 		mkdir("$path/resources/fonts",   0700, true);
 		mkdir("$path/resources/sprites", 0700, true);
 		// main program
-		file_put_contents("$path/main.amos", $this->program->code);
+		$ext = ($this->program->version > '0.9') ? 'aoz' : 'amos';
+		file_put_contents("$path/main.$ext", $this->program->code);
 		// manifest
-		copy($compiler->path . '/demos/amosball/manifest.hjson', "$path/manifest.hjson");
+		$manifest = $this->compilerPath() . '/templates/empty_application/manifest.hjson';
+		if (!file_exists($manifest)) {
+			// 0.7
+			$manifest = $this->compilerPath() . '/demos/amosball/manifest.hjson';
+		}
+		copy($manifest, "$path/manifest.hjson");
 		// resources
 		foreach ($this->program->resources as $resource) {
 			if (!$resource->file) {
@@ -121,7 +152,10 @@ class Compile
 	{
 		$this->report = [];
 		foreach ($this->raw_output as $output) {
-			if (beginsWith($output, 'Compilation successful')) {
+			if (
+				beginsWith($output, 'All tasks successful')
+				|| beginsWith($output, 'Compilation successful')
+			) {
 				$this->report[] = $output;
 			}
 			if (strpos($output, 'error')) {
@@ -141,11 +175,38 @@ class Compile
 	 */
 	protected function runCompiler($input)
 	{
-		$compiler = Compiler::get();
-		$command  = $compiler->path . '/amosc-linux-x64' . SP . $input;
-		$cwd      = getcwd();
-		chdir($compiler->path);
-		exec("$command 2>&1", $output);
+		$command = $this->compilerExec() . SP . $input;
+		$cwd     = getcwd();
+		chdir($this->compilerPath());
+		clearstatcache();
+		if (strpos($command, 'wine') === 0) {
+			@unlink("$input/output");
+			$path = Compiler::get()->path;
+			$id   = uniqid();
+			file_put_contents("$path/in/$id", join("\n", [$this->program->version, $input]));
+			$wait = 100;
+			while (--$wait && !file_exists("$path/out/$id")) {
+				usleep(100000);
+				clearstatcache();
+			}
+			if (!file_exists("$path/out/$id")) {
+				$output = ['Error : winecompile call timeout'];
+			}
+			else {
+				$wait = 100;
+				while (--$wait && !file_exists("$input/output")) {
+					usleep(100000);
+					clearstatcache();
+				}
+				$output = file_exists("$input/output")
+					? file("$input/output")
+					: ['Error : winecompile call timeout or no output'];
+				unlink("$path/out/$id");
+			}
+		}
+		else {
+			exec("$command 2>&1", $output);
+		}
 		chdir($cwd);
 		$this->raw_output = array_merge($this->raw_output, $output);
 	}

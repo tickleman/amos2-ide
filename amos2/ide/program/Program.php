@@ -1,6 +1,7 @@
 <?php
 namespace Amos2\Ide;
 
+use Amos2\Ide\Compiler\Versions;
 use Amos2\Ide\Program\Resource;
 use ITRocks\Framework\Controller\Feature;
 use ITRocks\Framework\Dao;
@@ -15,7 +16,7 @@ use ITRocks\Framework\User;
  * @before_write setNewProgramAuthor
  * @business
  * @data_access_control isChangeAllowed
- * @display_order name, author, code
+ * @display_order name, author, code, version, resources
  * @feature
  * @list name, author, last_update
  * @override creation    @user invisible_edit, invisible_output
@@ -54,6 +55,15 @@ class Program
 	 */
 	public $resources;
 
+	//------------------------------------------------------------------------------------ $resources
+	/**
+	 * @default Versions::default
+	 * @mandatory
+	 * @see Versions::default
+	 * @var string
+	 */
+	public $version;
+
 	//--------------------------------------------------------------------------------------- dirName
 	/**
 	 * A directory name that identifies the program (author and project name)
@@ -64,7 +74,9 @@ class Program
 	 */
 	public function dirName($separator = SL)
 	{
-		return strUriElement($this->author->login) . $separator . strUriElement($this->name);
+		return str_replace(
+			DOT, '-', strUriElement($this->author->login) . $separator . strUriElement($this->name)
+		);
 	}
 
 	//------------------------------------------------------------------------------- isChangeAllowed
