@@ -104,7 +104,9 @@ class Compile
 			// 0.7
 			$manifest = $this->compilerPath() . '/demos/amosball/manifest.hjson';
 		}
-		copy($manifest, "$path/manifest.hjson");
+		if ($this->program->version < '0.9.3.2') {
+			copy($manifest, "$path/manifest.hjson");
+		}
 		// resources
 		foreach ($this->program->resources as $resource) {
 			if (!$resource->file) {
