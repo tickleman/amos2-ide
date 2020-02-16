@@ -63,7 +63,10 @@ class Compile
 	protected function compilerExec()
 	{
 		$path = $this->compilerPath();
-		$exec = $path . '/amosc-linux-x64';
+		$exec = $path . '/aoz-linux-x64';
+		if (!file_exists($exec)) {
+			$exec = $path . '/amosc-linux-x64';
+		}
 		if (!file_exists($exec)) {
 			$exec = "wine $path/aoz-x86.exe";
 		}
