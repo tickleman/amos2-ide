@@ -151,8 +151,12 @@ class Compile
 		if (!is_dir($output)) {
 			mkdir($output, 0700, true);
 		}
-		exec("rsync -aPq --delete $input/html/ $output/ 2>&1", $output);
-		$this->raw_output = array_merge($this->raw_output, $output);
+		exec("rsync -aPq --delete $input/html/ $output/ 2>&1", $log);
+		exec("rsync -aPq '" . $this->compilerPath() . "/fonts/google/ibm plex mono/' $output/resources/fonts/google/ 2>&1", $log);
+		if (file_exists($this->compilerPath() . '/index.html')) {
+			exec("rsync -aPq " . $this->compilerPath() . "/index.html $output/ 2>&1", $log);
+		}
+		$this->raw_output = array_merge($this->raw_output, $log);
 	}
 
 	//----------------------------------------------------------------------------- rawOutputToReport
